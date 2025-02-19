@@ -1,18 +1,61 @@
-# Build and Release Folders
-bin-debug/
-bin-release/
-[Oo]bj/
-[Bb]in/
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.sqlite3
+*.db
 
-# Other files and folders
-.settings/
+# Virtual environments
+venv/
+env/
+.venv/
+.env/
 
-# Executables
-*.swf
-*.air
-*.ipa
-*.apk
+# Jupyter Notebooks
+.ipynb_checkpoints/
 
-# Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
-# should NOT be excluded as they contain compiler settings and other important
-# information for Eclipse / Flash Builder.
+# VS Code
+.vscode/
+
+# IDEs
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Logs
+*.log
+
+# Operating System
+.DS_Store
+Thumbs.db
+
+# Build and distribution directories
+build/
+dist/
+*.egg-info/
+
+# Miscellaneous
+*.bak
+*.swp
+
+# Dependency management files
+Pipfile.lock
+requirements.txt
+
+# Docker
+docker-compose.yml
+Dockerfile
+
+# Sensitive data
+config.env
+credentials.json
+
+# Testing artifacts
+.coverage
+nosetests.xml
+coverage.xml
+*.test_results
+
+# Caches
+.cache/
