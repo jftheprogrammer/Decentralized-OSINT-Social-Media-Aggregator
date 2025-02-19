@@ -1,67 +1,59 @@
-# Decentralized OSINT Social Media Aggregator
+# Decentralized OSINT Aggregator
 
 ## Overview
-
-The **Decentralized OSINT Social Media Aggregator** is a powerful Python application designed to collect and aggregate open-source intelligence (OSINT) from multiple social media platforms. This project enables users to gather insights efficiently while maintaining flexibility, caching, and rate-limiting mechanisms.
-
-## Features
-
-- **Multi-platform support:** Aggregates data from the top 10 social media platforms.
-- **Dynamic token handling:** Easily insert your own API tokens.
-- **Caching:** Reduces redundant API requests with TTL-based caching.
-- **Rate limiting:** Prevents exceeding platform API rate limits.
-- **JSON data export:** Saves aggregated data to a JSON file.
-
-## Supported Platforms
-
-- Twitter
-- Facebook
-- YouTube
-- Reddit
-- Instagram
-- LinkedIn
-- TikTok
-- Pinterest
-- Telegram
-- Mastodon
+This project is a **Decentralized OSINT Aggregator** designed to collect and process open-source intelligence (OSINT) data from multiple platforms. It leverages Python for data fetching, caching, and JSON file management, while Rust handles lightweight and efficient JSON processing.
 
 ## Project Structure
-
 ```
-/your-project-folder
-│
-├── config.json
-├── osint_aggregator.py
-├── osint_aggregated_data.json
-├── README.md
-├── requirements.txt
-└── .gitignore
+.
+├── main.py                  # Python entry point for OSINT aggregation
+├── rust_osint_processor.rs  # Rust file for JSON processing
+├── config.json               # Configuration file for API endpoints, headers, and tokens
+├── .env                      # Environment variables containing API tokens
+├── processed_data.json       # Output file containing aggregated OSINT data
+├── requirements.txt          # Python dependencies
+├── Cargo.toml                 # Rust dependencies
+├── README.md                 # Project documentation
 ```
 
-## Installation
+## Features
+- Multi-source OSINT data aggregation.
+- Rate-limited, concurrent fetching with caching.
+- Secure configuration management using environment variables.
+- Rust-powered JSON processing for optimized performance.
+- Error handling, logging, and data validation.
 
-1. **Clone the repository:**
+## Setup
 
+### 1. Clone the repository:
 ```bash
 $ git clone https://github.com/yourusername/osint-aggregator.git
 $ cd osint-aggregator
 ```
 
-2. **Create a virtual environment:**
-
+### 2. Create and activate a virtual environment:
 ```bash
 $ python -m venv venv
-$ source venv/bin/activate   # For Linux & Mac
-$ venv\Scripts\activate     # For Windows
+$ source venv/bin/activate   # On Linux/Mac
+$ venv\Scripts\activate      # On Windows
 ```
 
-3. **Install dependencies:**
-
+### 3. Install dependencies:
 ```bash
 $ pip install -r requirements.txt
 ```
 
-4. **Create a config.json file:**
+### 4. Set up environment variables:
+Create a `.env` file in the root directory and add your API tokens:
+```
+TWITTER_API_TOKEN=your_twitter_token
+FACEBOOK_API_TOKEN=your_facebook_token
+YOUTUBE_API_TOKEN=your_youtube_token
+REDDIT_API_TOKEN=your_reddit_token
+```
+
+### 5. Configure your sources:
+Edit `config.json` to specify your OSINT sources, headers, and endpoints.
 
 ```json
 {
@@ -69,14 +61,13 @@ $ pip install -r requirements.txt
     {
       "name": "Twitter",
       "endpoint": "https://api.twitter.com/2/tweets/search/recent",
-      "params": {"query": "OSINT"},
-      "headers": {"Authorization": "Bearer YOUR_API_TOKEN"}
+      "headers": { "Authorization": "Bearer YOUR_API_TOKEN" },
+      "params": { "query": "#cybersecurity", "max_results": 10 }
     },
     {
-      "name": "YouTube",
-      "endpoint": "https://www.googleapis.com/youtube/v3/search",
-      "params": {"q": "OSINT", "part": "snippet"},
-      "headers": {"Authorization": "Bearer YOUR_API_TOKEN"}
+      "name": "Reddit",
+      "endpoint": "https://www.reddit.com/r/netsec/new.json",
+      "params": { "limit": 10 }
     }
   ],
   "rate_limit": 5,
@@ -84,59 +75,34 @@ $ pip install -r requirements.txt
 }
 ```
 
-👉 **Note:** Replace `YOUR_API_TOKEN` with your actual API keys.
-
-5. **Add your API tokens:**
-   - Open `osint_aggregator.py`
-   - Replace the placeholders in the `API_TOKENS` dictionary with your own tokens.
-
-## Usage
-
-Run the aggregator:
-
+### 6. Build and run the Rust processor:
 ```bash
-$ python osint_aggregator.py
+$ cargo build --release
+$ ./target/release/rust_osint_processor < processed_data.json
 ```
 
-The aggregated data will be saved to `osint_aggregated_data.json`.
-
-## Environment Variables (Optional)
-
-For enhanced security, you can use environment variables instead of hardcoding API tokens.
-
-1. **Create a .env file:**
-
-```
-TWITTER_API_TOKEN=your_twitter_api_token
-YOUTUBE_API_TOKEN=your_youtube_api_token
+### 7. Run the Python OSINT Aggregator:
+```bash
+$ python main.py
 ```
 
-2. **Load environment variables:**
+## Error Handling
+- **API errors:** Automatically logged with detailed error messages.
+- **Caching:** Results cached to prevent redundant API calls.
+- **Validation:** Input data validation prevents malformed requests.
 
-```python
-from dotenv import load_dotenv
-load_dotenv()
+## Testing
+Run unit tests using:
+```bash
+$ python -m unittest discover tests/
 ```
 
-## .gitignore
-
-Ensure your sensitive files are not committed to GitHub:
-
-```
-config.json
-.env
-osint_aggregated_data.json
-```
-
-## Contributing
-
-Contributions are welcome! Feel free to fork the repository and submit a pull request with improvements, new data sources, or additional features.
+## Contribution
+Feel free to fork the repository and submit pull requests. Follow the coding standards outlined in the project and ensure your code is covered with unit tests.
 
 ## License
-
-This project is open-source and available under the [MIT License](LICENSE).
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 ---
-
-✨ **Let’s make OSINT aggregation simple and powerful!** 🚀
+🔥 Built with Python & Rust — because OSINT deserves speed and security! 🚀
 
