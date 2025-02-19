@@ -1,0 +1,101 @@
+{
+  "sources": [
+    {
+      "name":      "Twitter",
+      "endpoint":  "https://api.twitter.com/2/tweets",
+      "headers":   {
+        "Authorization": "Bearer YOUR_API_TOKEN"
+      },
+      "params":    {
+        "query": "OSINT"
+      }
+    },
+    {
+      "name":      "Facebook",
+      "endpoint":  "https://graph.facebook.com/v12.0/me",
+      "headers":   {
+        "Authorization": "Bearer YOUR_API_TOKEN"
+      },
+      "params":    {
+        "fields": "id,name"
+      }
+    },
+    {
+      "name":      "YouTube",
+      "endpoint":  "https://www.googleapis.com/youtube/v3/search",
+      "headers":   {
+        "Authorization": "Bearer YOUR_API_TOKEN"
+      },
+      "params":    {
+        "part": "snippet",
+        "q": "OSINT"
+      }
+    },
+    {
+      "name":      "Reddit",
+      "endpoint":  "https://www.reddit.com/r/osint.json",
+      "headers":   {
+        "Authorization": "Bearer YOUR_API_TOKEN"
+      },
+      "params":    {
+        "limit": 10
+      }
+    },
+    {
+      "name":      "Instagram",
+      "endpoint":  "https://graph.instagram.com/me/media",
+      "headers":   {
+        "Authorization": "Bearer YOUR_API_TOKEN"
+      },
+      "params":    {
+        "fields": "id,caption"
+      }
+    },
+    {
+      "name":      "LinkedIn",
+      "endpoint":  "https://api.linkedin.com/v2/me",
+      "headers":   {
+        "Authorization": "Bearer YOUR_API_TOKEN"
+      },
+      "params":    {
+        "fields": "id,firstName,lastName"
+      }
+    },
+    {
+      "name":      "TikTok",
+      "endpoint":  "https://api.tiktok.com/v1/video/list",
+      "headers":   {
+        "Authorization": "Bearer YOUR_API_TOKEN"
+      },
+      "params":    {
+        "count": 5
+      }
+    },
+    {
+      "name":      "Pinterest",
+      "endpoint":  "https://api.pinterest.com/v1/me/pins",
+      "headers":   {
+        "Authorization": "Bearer YOUR_API_TOKEN"
+      },
+      "params":    {
+        "fields": "id,link,created_at"
+      }
+    },
+    {
+      "name":      "Telegram",
+      "endpoint":  "https://api.telegram.org/botYOUR_API_TOKEN/getUpdates",
+      "headers":   {},
+      "params":    {}
+    },
+    {
+      "name":      "Mastodon",
+      "endpoint":  "https://mastodon.social/api/v1/accounts/verify_credentials",
+      "headers":   {
+        "Authorization": "Bearer YOUR_API_TOKEN"
+      },
+      "params":    {}
+    }
+  ],
+  "rate_limit": 5,
+  "cache_ttl":  300
+}
