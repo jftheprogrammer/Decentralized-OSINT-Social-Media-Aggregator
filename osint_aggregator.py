@@ -2,6 +2,7 @@ import requests
 import json
 import time
 import os
+import subprocess
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from cachetools import TTLCache
 from typing import Dict, List, Optional, Any
@@ -31,17 +32,12 @@ API_TOKENS = {
 class OSINTFetcher:
     def __init__(self, source: Dict[str, Any]):
         self.source = source
-        # Insert API token dynamically if available
         if 'headers' in self.source:
             for key, value in self.source['headers'].items():
                 if value == "YOUR_API_TOKEN":
                     self.source['headers'][key] = API_TOKENS.get(self.source['name'], "")
 
     def fetch_data(self) -> Optional[Dict[str, Any]]:
-        """
-        Fetch data from a single OSINT source.
-        :return: Data from the source or None if an error occurs.
-        """
         try:
             headers = self.source.get('headers', {})
             response = requests.get(self.source['endpoint'], params=self.source.get('params', {}), headers=headers)
@@ -111,7 +107,27 @@ class DecentralizedOSINTAggregator:
         logging.info("Starting OSINT aggregation...")
         self.aggregate_data()
         logging.info(f"Aggregated data from {len(self.results)} sources.")
-        DataSaver.save_to_file(self.results)
+
+        # Process data with Rust
+        filtered_data = self.process_data_with_rust(self.results)
+        DataSaver.save_to_file(filtered_data)
+
+    def process_data_with_rust(self, data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        try:
+            data_json = json.dumps(data)
+            result = subprocess.run(
+                ["./target/release/rust_osint_processor"],  # Adjust this path based on your setup
+                input=data_json,
+                capture_output=True,
+                text=True
+            )
+            if result.returncode != 0:
+                logging.error(f"Rust processing failed: {result.stderr}")
+                return []
+            return json.loads(result.stdout)
+        except Exception as e:
+            logging.error(f"Error processing data with Rust: {e}")
+            return []
 
 
 class ConfigLoader:
